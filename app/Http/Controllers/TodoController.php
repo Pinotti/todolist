@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TodoRequest;
+use App\Http\Requests\TodoTaskRequest;
 use App\Http\Resources\TodoCollection;
+use App\Http\Resources\TodoResource;
+use App\Http\Resources\TodoTaskResource;
 use App\Models\Todo;
 use Illuminate\Http\Request;
 
@@ -19,68 +23,71 @@ class TodoController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\TodoRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TodoRequest $request)
     {
-        //
+        $input = $request->validated();
+        $todo = Todo::create($input);
+
+        return new TodoResource($todo);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param \App\Models\Todo $todo
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Todo $todo)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        $todo->load('tasks');
+        return new TodoResource($todo);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \App\Models\Todo $todo
+     * @param  \App\Http\Requests\TodoRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Todo $todo, TodoRequest $request)
     {
-        //
+        $input = $request->validated();
+
+        $todo->fill($input);
+        $todo->save();
+
+        return new TodoResource($todo->fresh());
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param \App\Models\Todo $todo
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Todo $todo)
     {
-        //
+        $todo->delete();
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param \App\Models\Todo $todo
+     * @param \App\Http\Requests\TodoTaskRequest $request
+     * @return \Illuminate\Http\Response
+     */
+    public function addTask(Todo $todo, TodoTaskRequest $request)
+    {
+        $input = $request->validated();
+        $todoTask = $todo->tasks()->create($input);
+
+        return new TodoTaskResource($todoTask);
     }
 }

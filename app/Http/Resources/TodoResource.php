@@ -16,7 +16,8 @@ class TodoResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'nome' => $this->nome
+            'nome' => $this->nome,
+            'tasks' => new TodoTaskCollection($this->whenLoaded('tasks'))
         ];
     }
 }

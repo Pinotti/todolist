@@ -18,5 +18,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::apiResources([
     'todos' => TodoController::class,
-    'tasks' => TodoTaskController::class
+    'todo-tasks' => TodoTaskController::class
 ]);
+
+Route::post('todos/{todo}/task', [TodoController::class, 'addTask']);
