@@ -22,7 +22,7 @@ return new class extends Migration
                 ->onUpdate('CASCADE')
                 ->onDelete('CASCADE');
             $table->string('nome');
-            $table->boolean('competo')->default(false);
+            $table->boolean('completo')->default(false);
             $table->timestamps();
         });
     }
