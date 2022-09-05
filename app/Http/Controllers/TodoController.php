@@ -8,7 +8,6 @@ use App\Http\Resources\TodoCollection;
 use App\Http\Resources\TodoResource;
 use App\Http\Resources\TodoTaskResource;
 use App\Models\Todo;
-use Illuminate\Http\Request;
 
 class TodoController extends Controller
 {
