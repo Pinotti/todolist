@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\TodoController;
+use App\Http\Controllers\TodoTaskController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,4 +16,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
+Route::apiResources([
+    'todos' => TodoController::class,
+    'tasks' => TodoTaskController::class
+]);
